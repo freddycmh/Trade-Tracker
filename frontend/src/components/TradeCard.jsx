@@ -1,5 +1,5 @@
 import React from "react";
-import { PenSquareIcon, Trash2 } from "lucide-react";
+import { Trash2, PenSquareIcon } from "lucide-react";
 
 const formatDate = (date) => {
   return date.toLocaleDateString("en-US", {
@@ -11,21 +11,49 @@ const formatDate = (date) => {
 
 const TradeCard = ({ trade, handleDelete }) => {
   return (
-    <div className="card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D]">
+    <div className="card w-96 bg-base-100 shadow-sm">
       <div className="card-body">
-        <h3 className="card-title text-base-content">{trade.ticker}</h3>
-        <p className="text-base-content/70">
-          {new Date(trade.expiration).toLocaleDateString()}
-        </p>
-        <div className="card-actions justify-between items-center mt-4">
-          <span className="text-sm text-base-content/60">
-            {formatDate(new Date(trade.createdAt))}
+        <span className="badge badge-xs badge-accent uppercase">
+          {trade.tradeType}
+        </span>
+
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">{trade.ticker}</h2>
+          <span className="text-sm font-semibold text-success">
+            {trade.optionType} ${trade.strike}
           </span>
-          <div className="flex items-center gap-1">
-            <PenSquareIcon className="size-4" />
+        </div>
+
+        <ul className="mt-4 flex flex-col gap-1 text-xs">
+          <li>
+            📅 Exp:{" "}
+            <span className="font-medium">
+              {new Date(trade.expiration).toLocaleDateString()}
+            </span>
+          </li>
+          <li>
+            💰 Entry: ${trade.entryPrice} | Exit: ${trade.exitPrice}
+          </li>
+          <li>
+            🧮 P/L:{" "}
+            <span
+              className={
+                trade.profitLoss >= 0 ? "text-green-500" : "text-red-500"
+              }
+            >
+              ${trade.profitLoss?.toFixed(2)}
+            </span>
+          </li>
+          <li className="opacity-70">✍️ {trade.notes || "No notes"}</li>
+        </ul>
+
+        <div className="mt-6 flex justify-between items-center text-xs text-base-content/60">
+          <span>Added: {formatDate(new Date(trade.createdAt))}</span>
+          <div className="flex items-center gap-2">
+            <PenSquareIcon className="size-4 cursor-pointer" />
             <button
-              className="btn btn-ghost btn-xs text-error"
               onClick={(e) => handleDelete(e, trade._id)}
+              className="btn btn-xs btn-outline btn-error"
             >
               <Trash2 className="size-4" />
             </button>
