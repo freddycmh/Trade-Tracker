@@ -11,7 +11,7 @@ const formatDate = (date) => {
 
 const TradeCard = ({ trade, handleDelete }) => {
   return (
-    <div className="card w-96 bg-base-100 shadow-sm">
+    <div className="card bg-base-100 shadow-md border border-slate-700 hover:ring-1 hover:ring-primary transition duration-200">
       <div className="card-body">
         <span className="badge badge-xs badge-accent uppercase">
           {trade.tradeType}
