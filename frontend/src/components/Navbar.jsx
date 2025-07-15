@@ -1,5 +1,6 @@
 import React from "react";
 import { Plus } from "lucide-react";
+import { Link } from "react-router";
 
 const Navbar = () => {
   return (
@@ -15,6 +16,7 @@ const Navbar = () => {
         </a>
 
         {/* Right: Add Trade */}
+
         <ul className="flex items-center gap-4">
           <li>
             <a

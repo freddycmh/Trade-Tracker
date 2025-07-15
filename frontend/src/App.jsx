@@ -1,15 +1,20 @@
 import React from "react";
-import { toast } from "react-hot-toast";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import { HopIcon } from "lucide-react";
+import CreateTrade from "./pages/CreateTrade";
 
 const App = () => {
   return (
-    <div className="w-full sm:w-4/5 mx-auto p-6">
-      <Navbar />
-      <HomePage />
-    </div>
+    <BrowserRouter>
+      <div className="w-full sm:w-4/5 mx-auto p-6">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create" element={<CreateTrade />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 };
 
