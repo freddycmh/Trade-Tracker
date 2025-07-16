@@ -19,13 +19,15 @@ const Navbar = () => {
 
         <ul className="flex items-center gap-4">
           <li>
-            <a
-              href="/create"
-              className="flex items-center gap-1 text-white text-base font-medium"
-            >
-              <Plus className="w-5 h-5" />
-              Trade
-            </a>
+            <button className="btn btn-ghost rounded-md" href="/create">
+              <a
+                href="/create"
+                className="flex items-center gap-1 text-white text-base font-medium"
+              >
+                <Plus className="w-5 h-5" />
+                Trade
+              </a>
+            </button>
           </li>
         </ul>
       </div>

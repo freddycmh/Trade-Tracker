@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../lib/axios";
 import TradesNotFound from "../components/TradesNotFound";
 import TradeCard from "../components/TradeCard";
+import TradeSummary from "../components/TradeSummary";
 
 const HomePage = () => {
   const [trades, setTrades] = useState([]);
@@ -39,6 +40,7 @@ const HomePage = () => {
         {loading && (
           <div className="text-center text-primary py-10">Loading...</div>
         )}
+        <TradeSummary />
         {trades.length === 0 && !loading && <TradesNotFound />}
         {trades.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
