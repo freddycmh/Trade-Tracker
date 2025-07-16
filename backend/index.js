@@ -20,7 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/trades", tradeRoutes);
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes); // ✅ match your frontend route
 
 
 

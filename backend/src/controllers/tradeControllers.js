@@ -23,7 +23,10 @@ export async function getTradeById(req, res) {
 
 export async function createTrade(req, res) {
   try {
-    const trade = await Trade.create({ ...req.body, user: req.userId });
+    const trade = await Trade.create({
+      ...req.body,
+      user: req.userId, // ✅ attach user ID from token
+    });
     res.status(201).json(trade);
   } catch (error) {
     console.log("error creating trade", error);
