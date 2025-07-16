@@ -3,8 +3,17 @@ import api from "../lib/axios";
 import TradesNotFound from "../components/TradesNotFound";
 import TradeCard from "../components/TradeCard";
 import TradeSummary from "../components/TradeSummary";
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../lib/auth";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+    }
+  }, []);
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
 

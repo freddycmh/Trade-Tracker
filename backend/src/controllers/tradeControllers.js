@@ -1,14 +1,13 @@
 import Trade from "../models/Trade.js";
 
-export async function getAllTrades(req, res) {
+export const getAllTrades = async (req, res) => {
   try {
-    const trades = await Trade.find({ user: req.userId }).sort({ createdAt: -1 });
-    res.status(200).json(trades);
-  } catch (error) {
-    console.log("error getting all trades", error);
-    res.status(500).json({ message: error.message });
+    const trades = await Trade.find({ user: req.userId }).sort({ tradeDate: -1 });
+    res.json(trades);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch trades" });
   }
-}
+};
 
 export async function getTradeById(req, res) {
   try {
@@ -25,11 +24,11 @@ export async function createTrade(req, res) {
   try {
     const trade = await Trade.create({
       ...req.body,
-      user: req.userId, // ✅ attach user ID from token
+      user: req.userId, // 👈 attach user ID from token
     });
     res.status(201).json(trade);
   } catch (error) {
-    console.log("error creating trade", error);
+    console.error("❌ Error creating trade:", error); // <--- check this log
     res.status(500).json({ message: error.message });
   }
 }
