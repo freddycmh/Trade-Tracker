@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="max-w-screen-xl mx-auto flex items-center justify-between">
         {/* Left: Logo + Text */}
         <a
-          href="#"
+          href="/"
           className="flex items-center gap-2 text-white font-semibold"
         >
           <img src="/logo2.png" alt="logo" className="w-8 h-8" />
@@ -20,7 +20,7 @@ const Navbar = () => {
         <ul className="flex items-center gap-4">
           <li>
             <a
-              href="#"
+              href="/create"
               className="flex items-center gap-1 text-white text-base font-medium"
             >
               <Plus className="w-5 h-5" />

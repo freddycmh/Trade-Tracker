@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../lib/axios";
 import { toast } from "react-hot-toast";
 
-const CreateTrade = () => {
+const EditTrade = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     ticker: "",
     optionType: "Call",
@@ -16,50 +20,62 @@ const CreateTrade = () => {
     notes: "",
   });
 
+  const [loading, setLoading] = useState(true);
+
+  // Fetch existing trade data
+  useEffect(() => {
+    const fetchTrade = async () => {
+      try {
+        const res = await api.get(`/trades/${id}`);
+        setForm(res.data);
+      } catch (err) {
+        toast.error("Failed to load trade.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrade();
+  }, [id]);
+
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await api.post("/trades", form);
-      toast.success("Trade added successfully!");
-      setForm({
-        ticker: "",
-        optionType: "Call",
-        strike: "",
-        expiration: "",
-        entryPrice: "",
-        exitPrice: "",
-        quantity: "",
-        tradeType: "",
-        tradeDate: "",
-        notes: "",
-      });
+      await api.put(`/trades/${id}`, form);
+      toast.success("Trade updated successfully!");
+      navigate("/"); // redirect to home
     } catch (err) {
+      toast.error("Failed to update trade.");
       console.error(err);
-      toast.error("Failed to add trade");
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Loading...
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center bg-base-50 px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md space-y-4 bg-slate-800 p-6 rounded-xl shadow-md"
       >
         <h2 className="text-2xl font-bold text-center text-white mb-4">
-          Add New Trade
+          Edit Trade
         </h2>
 
         <input
           name="ticker"
-          placeholder="Ticker"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.ticker}
           onChange={handleChange}
@@ -79,7 +95,6 @@ const CreateTrade = () => {
         <input
           type="number"
           name="strike"
-          placeholder="Strike Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.strike}
           onChange={handleChange}
@@ -99,7 +114,6 @@ const CreateTrade = () => {
           type="number"
           step="0.01"
           name="entryPrice"
-          placeholder="Entry Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.entryPrice}
           onChange={handleChange}
@@ -110,7 +124,6 @@ const CreateTrade = () => {
           type="number"
           step="0.01"
           name="exitPrice"
-          placeholder="Exit Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.exitPrice}
           onChange={handleChange}
@@ -120,7 +133,6 @@ const CreateTrade = () => {
         <input
           type="number"
           name="quantity"
-          placeholder="Quantity"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.quantity}
           onChange={handleChange}
@@ -129,7 +141,7 @@ const CreateTrade = () => {
 
         <input
           name="tradeType"
-          placeholder="Trade Type (Day, Swing, etc.)"
+          placeholder="Day, Swing, etc."
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.tradeType}
           onChange={handleChange}
@@ -154,11 +166,11 @@ const CreateTrade = () => {
         />
 
         <button type="submit" className="btn btn-primary w-full">
-          Submit Trade
+          Update Trade
         </button>
       </form>
     </div>
   );
 };
 
-export default CreateTrade;
+export default EditTrade;

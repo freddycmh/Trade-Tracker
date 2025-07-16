@@ -42,13 +42,15 @@ const HomePage = () => {
         {trades.length === 0 && !loading && <TradesNotFound />}
         {trades.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trades.map((trade) => (
-              <TradeCard
-                key={trade._id}
-                trade={trade}
-                handleDelete={handleDelete} // this can be defined in HomePage
-              />
-            ))}
+            {[...trades]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((trade) => (
+                <TradeCard
+                  key={trade._id}
+                  trade={trade}
+                  handleDelete={handleDelete}
+                />
+              ))}
           </div>
         )}
       </div>

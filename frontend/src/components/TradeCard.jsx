@@ -1,5 +1,7 @@
+// src/components/TradeCard.jsx
 import React from "react";
 import { Trash2, PenSquareIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (date) => {
   return date.toLocaleDateString("en-US", {
@@ -10,6 +12,12 @@ const formatDate = (date) => {
 };
 
 const TradeCard = ({ trade, handleDelete }) => {
+  const navigate = useNavigate();
+
+  const goToEdit = () => {
+    navigate(`/edit/${trade._id}`);
+  };
+
   return (
     <div className="card bg-base-100 shadow-md border border-slate-700 hover:ring-1 hover:ring-primary transition duration-200">
       <div className="card-body">
@@ -50,10 +58,15 @@ const TradeCard = ({ trade, handleDelete }) => {
         <div className="mt-6 flex justify-between items-center text-xs text-base-content/60">
           <span>Added: {formatDate(new Date(trade.createdAt))}</span>
           <div className="flex items-center gap-2">
-            <PenSquareIcon className="size-4 cursor-pointer" />
+            <PenSquareIcon
+              className="size-4 cursor-pointer hover:text-primary"
+              onClick={goToEdit}
+              title="Edit Trade"
+            />
             <button
               onClick={(e) => handleDelete(e, trade._id)}
               className="btn btn-xs btn-outline btn-error"
+              title="Delete Trade"
             >
               <Trash2 className="size-4" />
             </button>
