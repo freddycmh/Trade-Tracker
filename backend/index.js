@@ -3,6 +3,8 @@ import { connectDB } from "./src/config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import tradeRoutes from "./src/routes/tradeRoutes.js";
+import authRoutes from "./src/routes/auth.js";
+
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/trades", tradeRoutes);
+app.use("/auth", authRoutes);
 
 
 

@@ -1,19 +1,27 @@
-import express from "express"
-import {getAllTrades, getTradeById, updateTrade, deleteTrade, createTrade} from "../controllers/tradeControllers.js";
+import express from "express";
+import {
+  getAllTrades,
+  getTradeById,
+  updateTrade,
+  deleteTrade,
+  createTrade,
+} from "../controllers/tradeControllers.js";
+import { verifyToken } from "../middleware/auth.js"; 
 
-const router = express.Router()
+const router = express.Router();
 
-//get all
+// 🔒 Require login for all trade routes
+router.use(verifyToken);
+
+// Get all trades for logged-in user
 router.get("/", getAllTrades);
-// get one
+// Get one trade (must belong to user)
 router.get("/:id", getTradeById);
-//create
+// Create new trade for user
 router.post("/", createTrade);
-//update
-router.put("/:id", updateTrade); 
-//delete
+// Update user's trade
+router.put("/:id", updateTrade);
+// Delete user's trade
 router.delete("/:id", deleteTrade);
 
 export default router;
-
-
