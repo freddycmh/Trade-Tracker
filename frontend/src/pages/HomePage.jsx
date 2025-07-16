@@ -22,7 +22,6 @@ const HomePage = () => {
     const fetchTrades = async () => {
       try {
         const response = await api.get("/trades");
-        console.log(response.data);
         setTrades(response.data);
       } catch (error) {
         console.error("error in fetchTrades", error);
@@ -40,20 +39,24 @@ const HomePage = () => {
         {loading && (
           <div className="text-center text-primary py-10">Loading...</div>
         )}
-        <TradeSummary />
-        {trades.length === 0 && !loading && <TradesNotFound />}
-        {trades.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...trades]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .map((trade) => (
-                <TradeCard
-                  key={trade._id}
-                  trade={trade}
-                  handleDelete={handleDelete}
-                />
-              ))}
-          </div>
+
+        {!loading && trades.length === 0 && <TradesNotFound />}
+
+        {!loading && trades.length > 0 && (
+          <>
+            <TradeSummary />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              {[...trades]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((trade) => (
+                  <TradeCard
+                    key={trade._id}
+                    trade={trade}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+            </div>
+          </>
         )}
       </div>
     </div>
