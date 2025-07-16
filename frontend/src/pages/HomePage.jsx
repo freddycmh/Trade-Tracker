@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from "react";
 import api from "../lib/axios";
-import TradesNotFound from "../components/TradesNotFound";
-import TradeCard from "../components/TradeCard";
-import TradeSummary from "../components/TradeSummary";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../lib/auth";
+import TradeCard from "../components/TradeCard";
+import TradeSummary from "../components/TradeSummary";
+import TradesNotFound from "../components/TradesNotFound";
 
 const HomePage = () => {
   const navigate = useNavigate();
 
+  const [trades, setTrades] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Redirect to login if not logged in
   useEffect(() => {
     if (!isLoggedIn()) {
       navigate("/login");
     }
-  }, []);
-  const [trades, setTrades] = useState([]);
-  const [loading, setLoading] = useState(true);
+  }, [navigate]);
 
-  const handleDelete = async (e, id) => {
-    e.preventDefault();
-    try {
-      await api.delete(`/trades/${id}`);
-      setTrades((prev) => prev.filter((trade) => trade._id !== id));
-    } catch (error) {
-      console.error("Failed to delete trade", error);
-    }
-  };
-
+  // Fetch trades
   useEffect(() => {
     const fetchTrades = async () => {
       try {
-        const response = await api.get("/trades");
-        setTrades(response.data);
+        const res = await api.get("/trades");
+        setTrades(res.data);
       } catch (error) {
         console.error("error in fetchTrades", error);
       } finally {
@@ -41,6 +34,17 @@ const HomePage = () => {
 
     fetchTrades();
   }, []);
+
+  // Handle delete
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+    try {
+      await api.delete(`/trades/${id}`);
+      setTrades((prev) => prev.filter((trade) => trade._id !== id));
+    } catch (error) {
+      console.error("Failed to delete trade", error);
+    }
+  };
 
   return (
     <div>

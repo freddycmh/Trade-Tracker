@@ -3,9 +3,17 @@ import React, { useState } from "react";
 import api from "../lib/axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { isLoggedIn } from "../lib/auth";
 
 const CreateTrade = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+    }
+  }, []);
 
   const [form, setForm] = useState({
     ticker: "",

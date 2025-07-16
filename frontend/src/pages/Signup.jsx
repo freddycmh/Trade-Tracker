@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../lib/axios";
+import { useEffect } from "react";
+import { isLoggedIn } from "../lib/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, []);
+
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {

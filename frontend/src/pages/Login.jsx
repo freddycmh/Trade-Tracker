@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../lib/axios";
+import { useEffect } from "react";
+import { isLoggedIn } from "../lib/auth";
 
 const Login = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, []);
+
   const [form, setForm] = useState({ email: "", password: "" });
 
   // Update form values when user types
