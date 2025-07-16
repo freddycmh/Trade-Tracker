@@ -1,3 +1,4 @@
+// src/pages/EditTrade.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../lib/axios";
@@ -22,7 +23,7 @@ const EditTrade = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // Fetch existing trade data
+  // Fetch existing trade by ID
   useEffect(() => {
     const fetchTrade = async () => {
       try {
@@ -48,10 +49,10 @@ const EditTrade = () => {
 
     try {
       await api.put(`/trades/${id}`, form);
-      toast.success("Trade updated successfully!");
-      navigate("/"); // redirect to home
+      toast.success("Trade updated!");
+      navigate("/"); // Go back to home
     } catch (err) {
-      toast.error("Failed to update trade.");
+      toast.error(" Failed to update trade.");
       console.error(err);
     }
   };
@@ -65,7 +66,7 @@ const EditTrade = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-50 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md space-y-4 bg-slate-800 p-6 rounded-xl shadow-md"
@@ -76,6 +77,7 @@ const EditTrade = () => {
 
         <input
           name="ticker"
+          placeholder="Ticker"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.ticker}
           onChange={handleChange}
@@ -95,6 +97,7 @@ const EditTrade = () => {
         <input
           type="number"
           name="strike"
+          placeholder="Strike Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.strike}
           onChange={handleChange}
@@ -114,6 +117,7 @@ const EditTrade = () => {
           type="number"
           step="0.01"
           name="entryPrice"
+          placeholder="Entry Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.entryPrice}
           onChange={handleChange}
@@ -124,6 +128,7 @@ const EditTrade = () => {
           type="number"
           step="0.01"
           name="exitPrice"
+          placeholder="Exit Price"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.exitPrice}
           onChange={handleChange}
@@ -133,6 +138,7 @@ const EditTrade = () => {
         <input
           type="number"
           name="quantity"
+          placeholder="Quantity"
           className="input input-bordered w-full text-white bg-slate-900"
           value={form.quantity}
           onChange={handleChange}

@@ -1,8 +1,12 @@
+// src/pages/CreateTrade.jsx
 import React, { useState } from "react";
 import api from "../lib/axios";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateTrade = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     ticker: "",
     optionType: "Call",
@@ -41,9 +45,10 @@ const CreateTrade = () => {
         tradeDate: "",
         notes: "",
       });
+      navigate("/"); // redirect to homepage
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add trade");
+      toast.error(" Failed to add trade");
     }
   };
 
@@ -51,7 +56,7 @@ const CreateTrade = () => {
     <div className="min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md space-y-4 bg-slate-800 p-6 rounded-xl shadow-md"
+        className="w-full max-w-md space-y-4 p-6 rounded-xl shadow-md"
       >
         <h2 className="text-2xl font-bold text-center text-white mb-4">
           Add New Trade
