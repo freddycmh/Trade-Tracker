@@ -1,4 +1,3 @@
-// src/components/TradeCard.jsx
 import React from "react";
 import { Trash2, PenSquareIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +15,14 @@ const TradeCard = ({ trade, handleDelete }) => {
 
   const goToEdit = () => {
     navigate(`/edit/${trade._id}`);
+  };
+
+  // Calculate % gain/loss
+  const calculatePercentage = () => {
+    if (!trade.entryPrice || !trade.exitPrice) return null;
+    const percent =
+      ((trade.exitPrice - trade.entryPrice) / trade.entryPrice) * 100;
+    return percent.toFixed(2);
   };
 
   return (
@@ -40,6 +47,10 @@ const TradeCard = ({ trade, handleDelete }) => {
             </span>
           </li>
           <li>
+            🔢 Quantity:{" "}
+            <span className="font-medium">{trade.quantity || 1}</span>
+          </li>
+          <li>
             💰 Entry: ${trade.entryPrice} | Exit: ${trade.exitPrice}
           </li>
           <li>
@@ -49,7 +60,8 @@ const TradeCard = ({ trade, handleDelete }) => {
                 trade.profitLoss >= 0 ? "text-green-500" : "text-red-500"
               }
             >
-              ${trade.profitLoss?.toFixed(2)}
+              ${trade.profitLoss?.toFixed(2)}{" "}
+              {calculatePercentage() && `(${calculatePercentage()}%)`}
             </span>
           </li>
           <li className="opacity-70">✍️ {trade.notes || "No notes"}</li>
