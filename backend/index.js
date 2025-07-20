@@ -3,6 +3,7 @@ import { connectDB } from "./src/config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from 'url';
 import tradeRoutes from "./src/routes/tradeRoutes.js";
 import authRoutes from "./src/routes/auth.js";
 
@@ -27,10 +28,14 @@ app.use("/api/auth", authRoutes); // ✅ match your frontend route
 
 // Serve frontend static files in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../frontend/dist'));
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const distPath = path.join(__dirname, '../frontend/dist');
+  
+  app.use(express.static(distPath));
   
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve('../frontend/dist/index.html'));
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 
