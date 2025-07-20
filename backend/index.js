@@ -24,8 +24,6 @@ app.use(express.json());
 app.use("/api/trades", tradeRoutes);
 app.use("/api/auth", authRoutes); // ✅ match your frontend route
 
-
-
 // Serve frontend static files in production
 if (process.env.NODE_ENV === 'production') {
   const __filename = fileURLToPath(import.meta.url);
@@ -34,7 +32,8 @@ if (process.env.NODE_ENV === 'production') {
   
   app.use(express.static(distPath));
   
-  app.get('*', (req, res) => {
+  // Only catch non-API routes for SPA routing
+  app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }
