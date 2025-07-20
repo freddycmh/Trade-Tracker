@@ -29,9 +29,9 @@ if (process.env.NODE_ENV === 'production') {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   const distPath = path.join(__dirname, '../frontend/dist');
-  
+
   app.use(express.static(distPath));
-  
+
   // Only catch non-API routes for SPA routing
   app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
@@ -39,7 +39,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 connectDB().then(() => {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log("Server running on port:", PORT);
-  });
+  // Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 });

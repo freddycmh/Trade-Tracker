@@ -6,3 +6,19 @@ channel = "stable-24_05"
 [deployment]
 run = ["sh", "-c", "cd backend && npm start"]
 build = ["sh", "-c", "cd frontend && npm install && npm run build && cd ../backend && npm install"]
+
+[workflows]
+runButton = "Dev Server"
+
+[[workflows.workflow]]
+name = "Dev Server"
+author = 30796092
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && npm start"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm run dev"
