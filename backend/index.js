@@ -12,17 +12,15 @@ dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(cors());
 app.use(express.json());
 
-//routes
-
 // Routes
 app.use("/api/trades", tradeRoutes);
-app.use("/api/auth", authRoutes); // ✅ match your frontend route
+app.use("/api/auth", authRoutes);
 
 // Serve frontend static files in production
 if (process.env.NODE_ENV === 'production') {
@@ -39,9 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 connectDB().then(() => {
-  // Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
