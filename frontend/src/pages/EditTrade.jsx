@@ -29,9 +29,16 @@ const EditTrade = () => {
         const res = await api.get(`/trades/${id}`);
         const tradeData = res.data;
         
-        // Format the expiration date for the date input
+        // Keep the original expiration date if it's already in the correct format
         if (tradeData.expiration) {
-          tradeData.expiration = new Date(tradeData.expiration).toISOString().split('T')[0];
+          const dateStr = tradeData.expiration;
+          // If it's already in YYYY-MM-DD format, keep it as is
+          if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            tradeData.expiration = dateStr;
+          } else {
+            // Otherwise, format it for the date input
+            tradeData.expiration = new Date(dateStr).toISOString().split('T')[0];
+          }
         }
         
         setForm(tradeData);
