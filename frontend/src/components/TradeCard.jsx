@@ -1,5 +1,5 @@
 import React from "react";
-import { Trash2, PenSquareIcon } from "lucide-react";
+import { Trash2, PenSquareIcon, Calendar, Hash, DollarSign, Calculator, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const formatDate = (date) => {
@@ -40,21 +40,23 @@ const TradeCard = ({ trade, handleDelete }) => {
         </div>
 
         <ul className="mt-4 flex flex-col gap-1 text-xs">
-          <li>
-            📅 Exp:{" "}
-            <span className="font-medium">
+          <li className="flex items-center gap-2">
+            <Calendar className="size-3" />
+            <span>Exp: <span className="font-medium">
               {new Date(trade.expiration).toLocaleDateString('en-CA')}
-            </span>
+            </span></span>
           </li>
-          <li>
-            🔢 Quantity:{" "}
-            <span className="font-medium">{trade.quantity || 1}</span>
+          <li className="flex items-center gap-2">
+            <Hash className="size-3" />
+            <span>Quantity: <span className="font-medium">{trade.quantity || 1}</span></span>
           </li>
-          <li>
-            💰 Entry: ${trade.entryPrice} | Exit: ${trade.exitPrice}
+          <li className="flex items-center gap-2">
+            <DollarSign className="size-3" />
+            <span>Entry: ${trade.entryPrice} | Exit: ${trade.exitPrice}</span>
           </li>
-          <li>
-            🧮 P/L:{" "}
+          <li className="flex items-center gap-2">
+            <Calculator className="size-3" />
+            <span>P/L:{" "}
             <span
               className={
                 trade.profitLoss >= 0 ? "text-green-500" : "text-red-500"
@@ -62,9 +64,12 @@ const TradeCard = ({ trade, handleDelete }) => {
             >
               ${trade.profitLoss?.toFixed(2)}{" "}
               {calculatePercentage() && `(${calculatePercentage()}%)`}
-            </span>
+            </span></span>
           </li>
-          <li className="opacity-70">✍️ {trade.notes || "No notes"}</li>
+          <li className="flex items-center gap-2 opacity-70">
+            <FileText className="size-3" />
+            <span>{trade.notes || "No notes"}</span>
+          </li>
         </ul>
 
         <div className="mt-6 flex justify-between items-center text-xs text-base-content/60">
