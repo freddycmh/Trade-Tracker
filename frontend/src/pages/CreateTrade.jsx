@@ -24,7 +24,6 @@ const CreateTrade = () => {
     exitPrice: "",
     quantity: "",
     tradeType: "",
-    tradeDate: "",
     notes: "",
   });
 
@@ -50,7 +49,6 @@ const CreateTrade = () => {
         exitPrice: "",
         quantity: "",
         tradeType: "",
-        tradeDate: "",
         notes: "",
       });
       navigate("/"); // redirect to homepage
@@ -140,23 +138,19 @@ const CreateTrade = () => {
           required
         />
 
-        <input
+        <select
           name="tradeType"
-          placeholder="Trade Type (Day, Swing, etc.)"
-          className="input input-bordered w-full text-white bg-slate-900"
+          className="select select-bordered w-full text-white bg-slate-900"
           value={form.tradeType}
           onChange={handleChange}
           required
-        />
-
-        <input
-          type="date"
-          name="tradeDate"
-          className="input input-bordered w-full text-white bg-slate-900"
-          value={form.tradeDate}
-          onChange={handleChange}
-          required
-        />
+        >
+          <option value="">Select Trade Type</option>
+          <option value="Day">Day</option>
+          <option value="Swing">Swing</option>
+          <option value="Scalp">Scalp</option>
+          <option value="Other">Other</option>
+        </select>
 
         <textarea
           name="notes"
