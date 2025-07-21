@@ -27,7 +27,14 @@ const EditTrade = () => {
     const fetchTrade = async () => {
       try {
         const res = await api.get(`/trades/${id}`);
-        setForm(res.data);
+        const tradeData = res.data;
+        
+        // Format the expiration date for the date input
+        if (tradeData.expiration) {
+          tradeData.expiration = new Date(tradeData.expiration).toISOString().split('T')[0];
+        }
+        
+        setForm(tradeData);
       } catch (err) {
         toast.error("Failed to load trade.");
         console.error(err);

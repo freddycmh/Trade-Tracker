@@ -43,7 +43,7 @@ const TradeCard = ({ trade, handleDelete }) => {
           <li>
             📅 Exp:{" "}
             <span className="font-medium">
-              {new Date(trade.expiration).toLocaleDateString()}
+              {new Date(trade.expiration).toLocaleDateString('en-CA')}
             </span>
           </li>
           <li>
