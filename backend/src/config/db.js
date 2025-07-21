@@ -1,6 +1,5 @@
 
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
 
 let mongod = null;
 
@@ -13,18 +12,26 @@ export const connectDB = async () => {
                 throw new Error("MONGO_URI environment variable is not set for production");
             }
             mongoUri = process.env.MONGO_URI;
+            console.log("🔄 Connecting to production MongoDB...");
         } else {
-            // Use in-memory MongoDB for development
-            console.log("🔄 Starting in-memory MongoDB for development...");
-            mongod = await MongoMemoryServer.create();
-            mongoUri = mongod.getUri();
+            // Use in-memory MongoDB for development only if the package is available
+            try {
+                const { MongoMemoryServer } = await import("mongodb-memory-server");
+                console.log("🔄 Starting in-memory MongoDB for development...");
+                mongod = await MongoMemoryServer.create();
+                mongoUri = mongod.getUri();
+            } catch (error) {
+                // Fallback to local MongoDB if mongodb-memory-server is not available
+                console.log("⚠️  mongodb-memory-server not available, using local MongoDB");
+                mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/tradetracker";
+            }
         }
         
         await mongoose.connect(mongoUri);
         console.log(`✅ MongoDB Connected successfully`);
         
         if (process.env.NODE_ENV !== 'production') {
-            console.log("📝 Using in-memory database - data will not persist between restarts");
+            console.log("📝 Using development database");
         }
     } catch (error) {
         console.error(`❌ MongoDB Connection Error: ${error.message}`);
