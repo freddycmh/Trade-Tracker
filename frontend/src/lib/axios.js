@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: import.meta.env.PROD ? "/api" : 
     window.location.hostname.includes('replit') 
-      ? `${window.location.protocol}//${window.location.hostname}:5000/api`
+      ? `${window.location.protocol}//${window.location.hostname.replace(/\.replit\.dev.*/, '.replit.dev')}:5000/api`
       : "http://localhost:5000/api",
 });
 

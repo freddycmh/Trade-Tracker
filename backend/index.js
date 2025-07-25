@@ -28,6 +28,11 @@ app.use(cors({
           'http://localhost:3000',
           'http://127.0.0.1:3000'
         ];
+
+    // Add Replit domain support
+    if (origin && origin.includes('.replit.dev')) {
+      return callback(null, true);
+    }
     
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -67,7 +72,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 connectDB().then(() => {
-  const host = process.env.NODE_ENV === 'production' ? "0.0.0.0" : "localhost";
+  const host = "0.0.0.0"; // Use 0.0.0.0 for Replit compatibility
   app.listen(PORT, host, () => {
     console.log(`🚀 Server running on ${host}:${PORT}`);
   });
