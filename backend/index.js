@@ -14,42 +14,14 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-// middleware
+// middleware - simplified CORS for development
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = process.env.NODE_ENV === 'production' 
-      ? [process.env.FRONTEND_URL || 'https://your-replit-domain.replit.app']
-      : [
-          'http://localhost:5173', 
-          'http://127.0.0.1:5173',
-          'http://localhost:3000',
-          'http://127.0.0.1:3000'
-        ];
-
-    // Add Replit domain support
-    if (origin && origin.includes('.replit.dev')) {
-      return callback(null, true);
-    }
-    
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    
-    // For development, also allow any localhost origin
-    if (process.env.NODE_ENV !== 'production' && origin.includes('localhost')) {
-      return callback(null, true);
-    }
-    
-    callback(new Error('Not allowed by CORS'));
-  },
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL || 'https://your-replit-domain.replit.app']
+    : true, // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  preflightContinue: false,
-  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 
@@ -71,9 +43,16 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+console.log("🔄 Starting backend server...");
+console.log("📦 Environment:", process.env.NODE_ENV);
+console.log("🔌 Port:", PORT);
+
 connectDB().then(() => {
   const host = "0.0.0.0"; // Use 0.0.0.0 for Replit compatibility
   app.listen(PORT, host, () => {
     console.log(`🚀 Server running on ${host}:${PORT}`);
+    console.log(`📍 Backend accessible at: http://localhost:${PORT}`);
   });
+}).catch(err => {
+  console.error("❌ Failed to start server:", err);
 });
