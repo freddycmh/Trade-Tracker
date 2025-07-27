@@ -17,7 +17,7 @@ Auth & Tools: JWT, bcryptjs, dotenv, concurrently, nodemon
 
 ⚙️ Installation
 	1.	Clone the repository:
-git clone https://github.com/yourusername/trade-tracker.git
+git clone https://github.com/freddycmh/Trade-Tracker.git
 cd trade-tracker
 	2.	Install dependencies:
 npm install
