@@ -34,23 +34,9 @@ This will start both the frontend and backend servers concurrently.
 
 Create a .env file in the /backend folder with:
 PORT=5005
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+MONGO_URI=create-your-own-mongo_URI
+JWT_SECRET=create-your-own-jwt-secret
 
-📁 Project Structure
-
-trade-tracker/
-├── backend/         → Express API server
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── index.js
-│   └── .env
-├── frontend/        → React client
-│   ├── src/
-│   ├── public/
-│   └── vite.config.js
-└── package.json     → Root script runs both servers
 
 🧠 Lessons Learned
 	•	Built a full-stack MERN app
