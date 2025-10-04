@@ -33,10 +33,14 @@ export async function createTrade(req, res) {
       });
     }
 
-    // Sanitize string fields
+    // Sanitize and convert data types
     const sanitizedData = {
       ...req.body,
       ticker: req.body.ticker?.trim().toUpperCase(),
+      strike: Number(req.body.strike),
+      entryPrice: Number(req.body.entryPrice),
+      exitPrice: Number(req.body.exitPrice),
+      quantity: Number(req.body.quantity),
       notes: sanitizeString(req.body.notes),
       user: req.userId,
     };
@@ -60,10 +64,14 @@ export async function updateTrade(req, res) {
       });
     }
 
-    // Sanitize string fields
+    // Sanitize and convert data types
     const sanitizedData = {
       ...req.body,
       ticker: req.body.ticker?.trim().toUpperCase(),
+      strike: Number(req.body.strike),
+      entryPrice: Number(req.body.entryPrice),
+      exitPrice: Number(req.body.exitPrice),
+      quantity: Number(req.body.quantity),
       notes: sanitizeString(req.body.notes),
     };
 

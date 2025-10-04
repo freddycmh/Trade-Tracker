@@ -6,7 +6,9 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
+
+  console.log("Navbar DEBUG:", { isAuthenticated, user, hasEmail: user?.email });
 
   const handleLogout = () => {
     logout();
@@ -35,6 +37,12 @@ const Navbar = () => {
               <Plus className="w-5 h-5" />
               Trade
             </Link>
+          )}
+
+          {isAuthenticated && user?.email && (
+            <span className="text-slate-300 text-base font-medium">
+              {user.email}
+            </span>
           )}
 
           {isAuthenticated ? (

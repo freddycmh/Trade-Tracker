@@ -27,9 +27,8 @@ export const validateTrade = (tradeData) => {
     errors.push("Option type must be 'Call' or 'Put'");
   }
 
-  // Validate strike (convert to number if string)
-  const strike = Number(tradeData.strike);
-  if (tradeData.strike === undefined || tradeData.strike === null || tradeData.strike === '' || isNaN(strike) || strike <= 0) {
+  // Validate strike
+  if (!tradeData.strike || typeof tradeData.strike !== 'number' || tradeData.strike <= 0) {
     errors.push("Strike price must be a positive number");
   }
 
@@ -43,22 +42,19 @@ export const validateTrade = (tradeData) => {
     }
   }
 
-  // Validate entryPrice (convert to number if string)
-  const entryPrice = Number(tradeData.entryPrice);
-  if (tradeData.entryPrice === undefined || tradeData.entryPrice === null || tradeData.entryPrice === '' || isNaN(entryPrice) || entryPrice < 0) {
+  // Validate entryPrice
+  if (!tradeData.entryPrice || typeof tradeData.entryPrice !== 'number' || tradeData.entryPrice < 0) {
     errors.push("Entry price must be a non-negative number");
   }
 
-  // Validate exitPrice (convert to number if string)
-  const exitPrice = Number(tradeData.exitPrice);
-  if (tradeData.exitPrice === undefined || tradeData.exitPrice === null || tradeData.exitPrice === '' || isNaN(exitPrice) || exitPrice < 0) {
+  // Validate exitPrice
+  if (!tradeData.exitPrice || typeof tradeData.exitPrice !== 'number' || tradeData.exitPrice < 0) {
     errors.push("Exit price must be a non-negative number");
   }
 
-  // Validate quantity (convert to number if string)
-  const quantity = Number(tradeData.quantity);
-  if (tradeData.quantity === undefined || tradeData.quantity === null || tradeData.quantity === '' || isNaN(quantity) || quantity < 1) {
-    errors.push("Quantity must be a positive whole number");
+  // Validate quantity
+  if (!tradeData.quantity || typeof tradeData.quantity !== 'number' || tradeData.quantity < 1) {
+    errors.push("Quantity must be at least 1");
   }
 
   // Validate tradeType if provided
