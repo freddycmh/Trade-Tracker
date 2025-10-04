@@ -1,38 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../lib/axios";
-import { useEffect } from "react";
-import { isLoggedIn } from "../lib/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuth();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+
+  // Redirect if already logged in
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, []);
-
-  const [form, setForm] = useState({ email: "", password: "" });
+  }, [isAuthenticated, navigate]);
 
   // Update form values when user types
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(""); // Clear error when user types
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       // Send POST request to login
       const res = await api.post("/auth/login", form);
 
-      // Save JWT token in localStorage
-      localStorage.setItem("token", res.data.token);
+      // Save JWT token using AuthContext
+      login(res.data.token);
 
       // Navigate to homepage
       navigate("/");
     } catch (err) {
-      alert("Login failed");
+      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
       console.error("Login error:", err);
     }
   };
@@ -44,6 +50,12 @@ const Login = () => {
         className="bg-slate-800 p-6 rounded-xl space-y-4 w-full max-w-sm shadow-lg"
       >
         <h2 className="text-xl font-bold text-white text-center">Log In</h2>
+
+        {error && (
+          <div className="alert alert-error">
+            <span>{error}</span>
+          </div>
+        )}
 
         <input
           name="email"
@@ -70,7 +82,7 @@ const Login = () => {
         </button>
 
         <p className="text-sm text-white text-center">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link className="link" to="/signup">
             Sign up
           </Link>

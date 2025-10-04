@@ -1,32 +1,38 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../lib/axios";
-import { useEffect } from "react";
-import { isLoggedIn } from "../lib/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuth();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+
+  // Redirect if already logged in
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, []);
-
-  const [form, setForm] = useState({ email: "", password: "" });
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(""); // Clear error when user types
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       const res = await api.post("/auth/register", form);
-      localStorage.setItem("token", res.data.token);
+      login(res.data.token);
       navigate("/");
     } catch (err) {
-      alert("Signup failed");
-      console.error(err);
+      const errorMessage = err.response?.data?.message || "Signup failed. Please try again.";
+      setError(errorMessage);
+      console.error("Signup error:", err);
     }
   };
 
@@ -37,6 +43,13 @@ const Signup = () => {
         className="bg-slate-800 p-6 rounded-xl space-y-4 w-full max-w-sm shadow-lg"
       >
         <h2 className="text-xl font-bold text-white text-center">Sign Up</h2>
+
+        {error && (
+          <div className="alert alert-error">
+            <span>{error}</span>
+          </div>
+        )}
+
         <input
           name="email"
           type="email"
@@ -60,9 +73,9 @@ const Signup = () => {
         </button>
         <p className="text-sm text-white text-center">
           Already have an account?{" "}
-          <a className="link" href="/login">
+          <Link className="link" to="/login">
             Log in
-          </a>
+          </Link>
         </p>
       </form>
     </div>

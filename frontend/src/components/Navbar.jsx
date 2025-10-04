@@ -2,13 +2,14 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../lib/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/login");
   };
 
@@ -26,7 +27,7 @@ const Navbar = () => {
 
         {/* Right: Buttons */}
         <div className="flex items-center gap-4">
-          {isLoggedIn() && (
+          {isAuthenticated && (
             <Link
               to="/create"
               className="flex items-center gap-1 text-white text-base font-medium"
@@ -36,7 +37,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {isLoggedIn() ? (
+          {isAuthenticated ? (
             <button
               onClick={handleLogout}
               className="text-white text-base font-medium"

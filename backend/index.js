@@ -10,6 +10,12 @@ import authRoutes from "./src/routes/auth.js";
 
 dotenv.config();
 
+// Check for required environment variables
+if (!process.env.JWT_SECRET) {
+  console.error("❌ FATAL ERROR: JWT_SECRET is not defined in environment variables");
+  process.exit(1);
+}
+
 const app = express();
 
 const PORT = process.env.PORT || 5000;

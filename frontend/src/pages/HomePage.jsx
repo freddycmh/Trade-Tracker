@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../lib/axios";
-import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../lib/auth";
 import TradeCard from "../components/TradeCard";
 import TradeSummary from "../components/TradeSummary";
 import TradesNotFound from "../components/TradesNotFound";
 
 const HomePage = () => {
-  const navigate = useNavigate();
-
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Redirect to login if not logged in
-  useEffect(() => {
-    if (!isLoggedIn()) {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   // Fetch trades
   useEffect(() => {
