@@ -222,7 +222,6 @@ const EditTrade = () => {
               onChange={handleChange}
               required
             >
-              <option value="">Select Trade Type</option>
               <option value="Day">Day</option>
               <option value="Swing">Swing</option>
               <option value="Scalp">Scalp</option>

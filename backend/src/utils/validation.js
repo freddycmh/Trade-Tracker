@@ -61,8 +61,10 @@ export const validateTrade = (tradeData) => {
     errors.push("Quantity must be a positive whole number");
   }
 
-  // Validate tradeType if provided
-  if (tradeData.tradeType && !['Day', 'Swing', 'Scalp', 'Other'].includes(tradeData.tradeType)) {
+  // Validate tradeType (required)
+  if (!tradeData.tradeType) {
+    errors.push("Trade type is required");
+  } else if (!['Day', 'Swing', 'Scalp', 'Other'].includes(tradeData.tradeType)) {
     errors.push("Invalid trade type");
   }
 
