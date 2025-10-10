@@ -13,9 +13,12 @@ const HomePage = () => {
     const fetchTrades = async () => {
       try {
         const res = await api.get("/trades");
+        console.log("Fetched trades:", res.data.length, "trades");
+        console.log("Trade data:", res.data);
         setTrades(res.data);
       } catch (error) {
         console.error("error in fetchTrades", error);
+        console.error("Error details:", error.response?.data || error.message);
       } finally {
         setLoading(false);
       }

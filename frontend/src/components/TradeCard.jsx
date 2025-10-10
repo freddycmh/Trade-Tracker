@@ -25,8 +25,20 @@ const TradeCard = ({ trade, handleDelete }) => {
     return percent.toFixed(2);
   };
 
+  // Determine card border/background color based on P/L
+  const getCardColorClasses = () => {
+    const pnl = trade.profitLoss ?? 0;
+    console.log(`Trade ${trade.ticker}: P/L = ${pnl}`);
+    if (pnl > 0) {
+      return "bg-green-500/5 border-2 border-green-500 hover:ring-green-500 hover:bg-green-500/10";
+    } else if (pnl < 0) {
+      return "bg-red-500/5 border-2 border-red-500 hover:ring-red-500 hover:bg-red-500/10";
+    }
+    return "bg-base-100 border border-slate-700 hover:ring-primary";
+  };
+
   return (
-    <div className="card bg-base-100 shadow-md border border-slate-700 hover:ring-1 hover:ring-primary transition duration-200">
+    <div className={`card shadow-md border hover:ring-1 transition duration-200 ${getCardColorClasses()}`}>
       <div className="card-body">
         <span className="badge badge-sm badge-accent uppercase">
           {trade.tradeType}
